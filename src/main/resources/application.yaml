@@ -5,6 +5,6 @@ spring:
     url: jdbc:postgresql://localhost:5432/proyecto1
     username: postgres
     password: 1234
-jpa:
-  hibernate:
-    ddl-auto: update
+  jpa:
+    hibernate:
+      ddl-auto: update
