@@ -23,9 +23,43 @@ public class GameServiceImpl implements GameService {
                 .orElseThrow(()-> new RuntimeException("Error creating game"));
     }
 
+    @Override
+    public GameModel getGame(Long gameId) {
+        return Optional.of(gameId)
+                .flatMap(gameRepository::findById)
+                .orElseThrow(()-> new RuntimeException("Error couldn't find game by id"));
+    }
+
+    @Override
+    public GameModel updateGame(Long gameId, GameModel gameRequest) {
+        return Optional.of(gameId)
+                .flatMap(gameRepository::findById)
+                .map(updatedGame -> updateEntity(updatedGame, gameRequest))
+                .map(gameRepository::save)
+                .orElseThrow(() -> new RuntimeException("Error couldn't find game by id"));
+    }
+
+    @Override
+    public void deleteGame(Long gameId) {
+        Optional.of(gameId)
+                .flatMap(gameRepository::findById)
+                .ifPresentOrElse(
+                        gameRepository::delete,
+                        () -> {
+                            throw new RuntimeException("Error deleting game: Game not found with id");
+                        }
+                );
+    }
+
+
     private GameModel mapToEntity(GameModel gameRequest) {
         return GameModel.builder()
                 .name(gameRequest.getName())
                 .build();
+    }
+
+    private GameModel updateEntity(GameModel updatedGame, GameModel gameRequest) {
+        updatedGame.setName(gameRequest.getName());
+        return updatedGame;
     }
 }

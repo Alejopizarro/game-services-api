@@ -18,4 +18,20 @@ public class GameController implements GameApi {
     public ResponseEntity<GameModel> createGame(GameModel gameRequest) {
         return ResponseEntity.ok(gameService.createGame(gameRequest));
     }
+
+    @Override
+    public ResponseEntity<GameModel> getGame(Long gameId) {
+        return ResponseEntity.ok(gameService.getGame(gameId));
+    }
+
+    @Override
+    public ResponseEntity<GameModel> updateGame(Long gameId, GameModel gameRequest) {
+        return ResponseEntity.ok(gameService.updateGame(gameId, gameRequest));
+    }
+
+    @Override
+    public ResponseEntity<Void> deleteGame(Long gameId) {
+        gameService.deleteGame(gameId);
+        return ResponseEntity.noContent().build();
+    }
 }
